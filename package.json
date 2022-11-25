@@ -1,6 +1,5 @@
 {
-  "name": "vite-project-example-minimal",
-  "version": "0.0.0",
+  "name": "basic-page-editor-bookmarklet",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
