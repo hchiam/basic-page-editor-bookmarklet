@@ -16,3 +16,8 @@
   width: fit-content;
   margin-top: 4rem;
 }
+
+.hidden {
+  visibility: hidden;
+  height: 0;
+}

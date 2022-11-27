@@ -1,6 +1,9 @@
 import "./style.css";
 
 import { turnIntoBookmarklet } from "./to_bookmarklet";
+import $ from "jquery";
+
+window.$ = $;
 
 const jsFileUrl = document.querySelector(
   'script[src*="bookmarklet_before"]'
@@ -12,6 +15,6 @@ fetch(jsFileUrl)
   })
   .then(function (code) {
     let bookmarklet_code = turnIntoBookmarklet(code);
-    console.log(bookmarklet_code);
+    // console.log(bookmarklet_code);
     document.querySelector("#bookmarklet_code").innerText = bookmarklet_code;
   });
