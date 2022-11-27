@@ -15,6 +15,7 @@
   padding: 1rem;
   width: fit-content;
   margin-top: 4rem;
+  user-select: all;
 }
 
 .hidden {
