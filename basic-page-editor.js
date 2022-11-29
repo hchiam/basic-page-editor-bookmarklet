@@ -54,6 +54,19 @@ function makeTextNodesTextEditable() {
       }
     });
   });
+  $("body").append(
+    $(`<style class="${editorClass}">
+        [contenteditable] {
+          cursor: text;
+          transition: background 0.2s, color 0.2s;
+        }
+        [contenteditable]:hover {
+          background: red;
+          color: white;
+          outline: solid red;
+        }
+      </style>`)
+  );
 }
 
 function flagIds() {
