@@ -2,12 +2,14 @@ const scope = $("#app");
 
 const editorClass = "basic-page-editor-bookmarklet";
 const flagClass = "basic-page-editor-bookmarklet-flag";
+const buttonClass = "basic-page-editor-bookmarklet-button";
 const noteClass = "basic-page-editor-bookmarklet-note";
 const saveClass = "basic-page-editor-bookmarklet-save";
 
 const tempElOutlineValue = "1px solid maroon";
 const tempElOutline = `outline:${tempElOutlineValue};`;
 
+removeTempElements();
 initializeTempElements();
 addSaveHtmlFileButton();
 $(window).on("resize", function () {
@@ -66,18 +68,18 @@ function flagIds() {
       const flag = isHidden
         ? $(
             `<small class="${editorClass} ${flagClass}">
-              ${id} (hidden)
-             </small>`
+            ${id} (hidden)
+              </small>`
           )
         : $(
             `<div class="${editorClass} ${flagClass}">
-              ${id}
-             </div>`
+            ${id}
+              </div>`
           );
       flag.css({
-        position: "fixed",
-        top: top + "px",
-        left: left + "px",
+        position: "absolute",
+        top: `calc(${Math.round(top)}px - 0.5rem)`,
+        left: `calc(${Math.round(left)}px - 0.5rem)`,
         "pointer-events": isHidden ? "" : "none",
         background: isHidden ? "#d3d3d38c" : "pink",
         color: isHidden ? "black" : "maroon",
@@ -92,7 +94,7 @@ function flagIds() {
         .on("mouseleave.flag", () => {
           flag.show();
         });
-      scope.append(flag);
+      $("body").append(flag);
       if (isHidden) {
         flag
           .off("mouseover.flag")
@@ -113,27 +115,31 @@ function flagIds() {
 function addRowsControls() {
   const rows = scope.find("> .row");
   rows.append(
-    `<button class="${editorClass}" onclick="editorMoveUp(this)" aria-label="earlier" style="${tempElOutline}">
-      ⬆️
-     </button>
-     <button class="${editorClass}" onclick="editorMoveDown(this)" aria-label="later" style="${tempElOutline}">
-      ⬇️
-     </button>
-     <textarea class="${editorClass} ${noteClass}" style="position:absolute;z-index:1;${tempElOutline}" placeholder="Notes"></textarea>`
+    `<div class="${editorClass}" style="position:absolute;right:0;z-index:1;pointer-events:none;">
+      <button class="${editorClass} ${buttonClass}" onclick="editorMoveUp(this)" aria-label="earlier" style="pointer-events:auto;cursor:pointer;float:left;${tempElOutline}">
+        ⬆️
+      </button>
+      <button class="${editorClass} ${buttonClass}" onclick="editorMoveDown(this)" aria-label="later" style="pointer-events:auto;cursor:pointer;float:left;${tempElOutline}">
+        ⬇️
+      </button>
+      <textarea class="${editorClass} ${noteClass}" style="min-width:300px;min-height:100px;pointer-events:auto;${tempElOutline}" placeholder="Notes"></textarea>
+    <div>`
   );
-  rows.find(`.${noteClass}`).hide();
+  rows.find(`.${noteClass}, .${buttonClass}`).hide();
   rows
     .off("mouseover.note")
     .on("mouseover.note", function () {
       const note = $(this);
-      note.find(`.${noteClass}`).slideDown(100);
+      note.find(`.${noteClass}, .${buttonClass}`).slideDown(100);
+      note.closest(".row").css("outline", "solid blue");
     })
     .off("mouseleave.note")
     .on("mouseleave.note", function () {
       const note = $(this);
       setTimeout(() => {
-        note.find(`.${noteClass}`).slideUp(100);
-      }, 1000);
+        note.find(`.${noteClass}, .${buttonClass}`).slideUp(100);
+        note.closest(".row").css("outline", "");
+      });
     });
   const notes = rows.find(`.${noteClass}`);
   notes.off("keyup.note").on("keyup.note", function () {
@@ -247,15 +253,15 @@ function animateMove(
 function addSaveHtmlFileButton() {
   scope.after(
     $(
-      `<button onclick="saveHtmlFile()" 
-        class="${editorClass} ${saveClass}" 
+      `<button onclick="saveHtmlFile()"
+        class="${editorClass} ${saveClass}"
         style="position:fixed;top:5px;left:5px;cursor:pointer;">
-            Save HTML code with notes
-            <style>
-              .${saveClass} {background:red !important; color:white !important;}
-              .${saveClass}:hover {background:lime !important; color:black !important;}
-            </style>
-     </button>`
+        Save HTML code with notes
+          <style>
+            .${saveClass} {background:red !important; color:white !important;}
+            .${saveClass}:hover {background:lime !important; color:black !important;}
+          </style>
+      </button>`
     )
   );
 }
