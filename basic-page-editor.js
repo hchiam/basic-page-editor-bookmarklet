@@ -179,8 +179,6 @@ window.editorMoveUp = (button) => {
     .first();
   console.log(destination);
   if (destination.length) {
-    animateMove(row, destination);
-    animateMove(destination, row);
     row.insertBefore(destination);
 
     row
@@ -203,8 +201,6 @@ window.editorMoveDown = (button) => {
     .first();
   console.log(destination);
   if (destination.length) {
-    animateMove(row, destination);
-    animateMove(destination, row);
     row.insertAfter(destination);
 
     row
@@ -218,48 +214,6 @@ window.editorMoveDown = (button) => {
   }
   flagIds();
 };
-
-function animateMove(
-  originJQueryElement,
-  destinationJQueryElement,
-  animationTime = 100
-) {
-  const original = $(originJQueryElement);
-  const originalMarginLeft = parseInt(original.css("marginLeft"));
-  const originalMarginTop = parseInt(original.css("marginTop"));
-  const originPosition = original.position();
-  originPosition.left = originPosition.left + originalMarginLeft;
-  originPosition.top = originPosition.top + originalMarginTop;
-  const originalWidth = original.outerWidth();
-  const originalHeight = original.outerHeight();
-  const destinationPosition = $(destinationJQueryElement).position();
-  const destinationWidth = $(destinationJQueryElement).outerWidth();
-  const destinationHeight = $(destinationJQueryElement).outerHeight();
-  const temp = original.clone();
-  $("body").append(temp);
-  temp.addClass("temp");
-  temp.addClass("disable-hover").find("*").css({ pointerEvents: "none" });
-  temp
-    .css({
-      position: "fixed",
-      zIndex: 1,
-      width: originalWidth,
-      height: originalHeight,
-    })
-    .offset(originPosition)
-    .animate(
-      {
-        left: destinationPosition.left,
-        top: destinationPosition.top,
-        width: destinationWidth,
-        height: destinationHeight,
-      },
-      animationTime
-    );
-  setTimeout(() => {
-    temp.remove();
-  }, animationTime * 10);
-}
 
 function addSaveHtmlFileButton() {
   scope.after(
