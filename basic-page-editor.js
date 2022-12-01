@@ -14,12 +14,16 @@ let hitSave = false;
 removeTempElements();
 initializeTempElements();
 addSaveHtmlFileButton();
-$(window).on("resize", function () {
-  flagIds();
-});
 setTimeout(() => {
   remindUser();
 }, 3 * 60_000);
+let resizeTimer = null;
+$(window).on("resize", function () {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    flagIds();
+  }, 200);
+});
 
 function removeTempElements() {
   scope.find(`.${editorClass}`).remove();
