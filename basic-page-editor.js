@@ -9,12 +9,17 @@ const saveClass = "basic-page-editor-bookmarklet-save";
 const tempElOutlineValue = "1px solid maroon";
 const tempElOutline = `outline:${tempElOutlineValue};`;
 
+let hitSave = false;
+
 removeTempElements();
 initializeTempElements();
 addSaveHtmlFileButton();
 $(window).on("resize", function () {
   flagIds();
 });
+setTimeout(() => {
+  remindUser();
+}, 3 * 60_000);
 
 function removeTempElements() {
   scope.find(`.${editorClass}`).remove();
@@ -254,7 +259,16 @@ function saveHtmlFile() {
     } else {
       tempElem.click();
     }
+    hitSave = true;
   } catch (err) {
     window.open("data:text/txt;charset=utf-8," + escape(html), "newdoc");
+    hitSave = true;
   }
+}
+
+function remindUser() {
+  if (hitSave) return;
+  alert(
+    "It's been a while. \n\nDo you want to save to HTML code with notes? \n\nIf you refresh this page, you'll lose your changes."
+  );
 }
