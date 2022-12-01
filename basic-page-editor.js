@@ -93,7 +93,6 @@ function flagIds() {
         position: "absolute",
         top: `calc(${Math.round(top)}px - 0.5rem)`,
         left: `calc(${Math.round(left)}px - 0.5rem)`,
-        "pointer-events": isHidden ? "" : "none",
         background: isHidden ? "#d3d3d38c" : "pink",
         color: isHidden ? "black" : "maroon",
         padding: isHidden ? "0.25rem" : "0.5rem",
@@ -108,19 +107,18 @@ function flagIds() {
           flag.show();
         });
       $("body").append(flag);
-      if (isHidden) {
-        flag
-          .off("mouseover.flag")
-          .on("mouseover.flag", () => {
-            flag.hide();
-          })
-          .off("mouseleave.flag")
-          .on("mouseleave.flag", () => {
-            setTimeout(() => {
-              flag.show();
-            }, 3000);
-          });
-      }
+      flag
+        .off("mouseover.flag")
+        .on("mouseover.flag", () => {
+          flag.hide();
+          console.log("should hide");
+        })
+        .off("mouseleave.flag")
+        .on("mouseleave.flag", () => {
+          setTimeout(() => {
+            flag.show();
+          }, 3000);
+        });
     });
   }
 }
