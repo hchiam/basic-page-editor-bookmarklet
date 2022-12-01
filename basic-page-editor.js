@@ -128,7 +128,7 @@ function flagIds() {
 function addRowsControls() {
   const rows = scope.find("> .row");
   rows.append(
-    `<div class="${editorClass}" style="position:absolute;right:0;z-index:1;pointer-events:none;">
+    `<div class="${editorClass}" style="position:absolute;top:100%;right:0;z-index:1;pointer-events:none;">
       <button class="${editorClass} ${buttonClass}" onclick="editorMoveUp(this)" aria-label="earlier" style="pointer-events:auto;cursor:pointer;float:left;${tempElOutline}">
         ⬆️
       </button>
@@ -144,14 +144,14 @@ function addRowsControls() {
     .on("mouseover.note", function () {
       const note = $(this);
       note.find(`.${noteClass}, .${buttonClass}`).slideDown(100);
-      note.closest(".row").css("outline", "solid blue");
+      note.closest(".row").css({ outline: "solid blue", position: "relative" });
     })
     .off("mouseleave.note")
     .on("mouseleave.note", function () {
       const note = $(this);
       setTimeout(() => {
         note.find(`.${noteClass}, .${buttonClass}`).slideUp(100);
-        note.closest(".row").css("outline", "");
+        note.closest(".row").css("outline", "").removeAttr("style");
       });
     });
   const notes = rows.find(`.${noteClass}`);
