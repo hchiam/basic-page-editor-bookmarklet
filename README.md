@@ -1,5 +1,7 @@
 # basic-page-editor-bookmarklet
 
+Notes on what a bookmarklet is, and examples, can be found at: https://github.com/hchiam/learning-js/tree/main/bookmarklets#bookmarklets
+
 ```sh
 yarn; yarn dev
 # http://localhost:3000/
