@@ -280,7 +280,8 @@ function saveHtmlFile() {
 
 function remindUser() {
   if (hitSave) return;
-  alert(
+  const yes = confirm(
     "It's been a while. \n\nDo you want to save to HTML code with notes? \n\nIf you refresh this page, you'll lose your changes."
   );
+  if (yes) saveHtmlFile();
 }
