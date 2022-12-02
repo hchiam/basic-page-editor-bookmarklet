@@ -90,13 +90,13 @@ function flagIds() {
       const flag = isHidden
         ? $(
             `<small class="${editorClass} ${flagClass}">
-            ${id} (hidden)
-              </small>`
+              ${id} (hidden)
+            </small>`
           )
         : $(
             `<div class="${editorClass} ${flagClass}">
-            ${id}
-              </div>`
+              ${id}
+            </div>`
           );
       flag.css({
         position: "absolute",
@@ -128,6 +128,9 @@ function flagIds() {
             flag.show();
           }, 3000);
         });
+      if (isHidden) {
+        console.log("HIDDEN ID:", id);
+      }
     });
   }
 }
@@ -135,31 +138,36 @@ function flagIds() {
 function addRowsControls() {
   const rows = scope.find("> .row");
   rows.append(
-    `<div class="${editorClass}" style="position:absolute;top:100%;right:0;z-index:1;pointer-events:none;">
-      <button class="${editorClass} ${buttonClass}" onclick="editorMoveUp(this)" aria-label="earlier" style="pointer-events:auto;cursor:pointer;float:left;${tempElOutline}">
-        ⬆️
-      </button>
-      <button class="${editorClass} ${buttonClass}" onclick="editorMoveDown(this)" aria-label="later" style="pointer-events:auto;cursor:pointer;float:left;${tempElOutline}">
-        ⬇️
-      </button>
-      <textarea class="${editorClass} ${noteClass}" style="min-width:300px;min-height:100px;pointer-events:auto;${tempElOutline}" placeholder="Notes"></textarea>
-    <div>`
+    `<div class="${editorClass}" style="position:absolute;width:90%;top:100%;right:0;z-index:1;background:pink;padding:5px 30px 10px 20px;">
+        <button class="${editorClass} ${buttonClass}" onclick="editorMoveUp(this)" aria-label="earlier" style="pointer-events:auto;cursor:pointer;float:left;margin:5px;padding:10px;${tempElOutline}">
+          ⬆️ earlier
+        </button>
+        <button class="${editorClass} ${buttonClass}" onclick="editorMoveDown(this)" aria-label="later" style="pointer-events:auto;cursor:pointer;float:left;margin:5px;padding:10px;${tempElOutline}">
+          ⬇️ later
+        </button>
+        <br/>
+        <textarea class="${editorClass} ${noteClass}" style="min-width:300px;min-height:100px;pointer-events:auto;resize:none;overflow:auto;margin:5px;${tempElOutline}" placeholder="Notes"></textarea>
+      <div>`
   );
   rows.find(`.${noteClass}, .${buttonClass}`).hide();
   rows
     .off("mouseover.note")
     .on("mouseover.note", function () {
       const note = $(this);
-      note.find(`.${noteClass}, .${buttonClass}`).slideDown(100);
+      note
+        .find(`.${noteClass}, .${buttonClass}`)
+        .slideDown(100)
+        .prop("disabled", false);
       note.closest(".row").css({ outline: "solid blue", position: "relative" });
     })
     .off("mouseleave.note")
     .on("mouseleave.note", function () {
       const note = $(this);
+      note.find(`.${noteClass}, .${buttonClass}`).prop("disabled", true);
       setTimeout(() => {
         note.find(`.${noteClass}, .${buttonClass}`).slideUp(100);
         note.closest(".row").css("outline", "").removeAttr("style");
-      });
+      }, 500);
     });
   const notes = rows.find(`.${noteClass}`);
   notes.off("keyup.note").on("keyup.note", function () {
