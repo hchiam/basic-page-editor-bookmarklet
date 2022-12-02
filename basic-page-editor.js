@@ -28,6 +28,7 @@ $(window).on("resize", function () {
 function removeTempElements() {
   scope.find(`.${editorClass}`).remove();
   scope.find("[contenteditable]").removeAttr("contenteditable");
+  scope.find(".row").removeAttr("style");
 }
 
 function initializeTempElements() {
